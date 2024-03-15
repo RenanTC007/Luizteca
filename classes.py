@@ -15,6 +15,22 @@ class Funcionario(Pessoa):
 class Dono(Funcionario):
     def __init__(self, nome, cpf, endereco, telefone, email, salario, senha):
         super().__init__(nome, cpf, endereco, telefone, email, salario, senha)
+    
+    def cadastrar_funcionario():
+        while True:
+            try:
+                print("Cadastrando um novo funcionário.")
+                nome = input("Nome: ")
+                cpf = input("Cpf: ")
+                endereco = input("Endereço: ")
+                telefone = input("Número de telefone: ")
+                email = input("E-mail: ")
+                salario = float(input("Salário [apenas números]: "))
+                senha = SENHA_PADRAO
+                print("Funcionário", nome, "cadastrado com sucesso. A senha padrão é 123")
+                return Funcionario(nome, cpf, endereco, telefone, email, salario, senha)
+            except:
+                print("O salário deve ser um número menor que", TETO_SALARIAL, " Tente novamente.")
 
 class Publicacao:
     def __init__(self, autor, editora, ano, titulo, genero, isbn):
