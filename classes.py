@@ -1,3 +1,6 @@
+SENHA_PADRAO = "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3" # 123
+TETO_SALARIAL = 10000
+
 class Pessoa:
     def __init__(self, nome, cpf, endereco, telefone, email):
         self.nome = nome
@@ -16,7 +19,7 @@ class Dono(Funcionario):
     def __init__(self, nome, cpf, endereco, telefone, email, salario, senha):
         super().__init__(nome, cpf, endereco, telefone, email, salario, senha)
     
-    def cadastrar_funcionario():
+    def cadastrar_funcionario(self):
         while True:
             try:
                 print("Cadastrando um novo funcionário.")

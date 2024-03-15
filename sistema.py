@@ -2,9 +2,6 @@ from getpass import getpass
 from hashlib import sha256
 from classes import *
 
-SENHA_PADRAO = "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3" # 123
-TETO_SALARIAL = 10000
-
 def fazer_login():
     print("Bem-vindo. Faça login:")
     condicao = True
@@ -41,7 +38,7 @@ def sistema():
 
     match escolha:
         case 1:
-            if funcionario_atual == dono: 
+            if funcionario_atual == dono:
                 funcionarios.append(dono.cadastrar_funcionario())
             else:
                 print("Você não tem permissões para cadastrar funcionários.")
@@ -50,7 +47,6 @@ def sistema():
 dono = Dono("Luiz de Moraes Sampaio", "426.704.238-17", "Guarulhos", "(11) 94318-6452", "luiz.sampaio@yahoo.com.br", 2, SENHA_PADRAO)
 funcionarios = [dono]
 
-# Primeiro login (dono)
-funcionario_atual = fazer_login()
-sistema()
-
+while True:
+    funcionario_atual = fazer_login()
+    sistema()
