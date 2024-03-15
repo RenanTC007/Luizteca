@@ -26,12 +26,12 @@ def sistema():
     print("Bem-vindo,", funcionario_atual.nome, ". Opções disponíveis: ")
     print("[1] Cadastrar funcionário.")
     print("[2] Demitir funcionário.")
-    escolha = 0
+    print("[99] Sair da conta.")
     condicao = True
     while condicao:
         try:
             escolha = int(input("O que você deseja fazer? "))
-            condicao = (escolha < 1 or escolha > 9)
+            condicao = (escolha < 1 or escolha > 99)
             if condicao: raise Exception()
         except:
             print("Você digitou uma opção inválida. Tente novamente.")
@@ -42,6 +42,8 @@ def sistema():
                 funcionarios.append(dono.cadastrar_funcionario())
             else:
                 print("Você não tem permissões para cadastrar funcionários.")
+    
+    return escolha
 
 # Cadastrando o dono com a senha padrão
 dono = Dono("Luiz de Moraes Sampaio", "426.704.238-17", "Guarulhos", "(11) 94318-6452", "luiz.sampaio@yahoo.com.br", 2, SENHA_PADRAO)
@@ -49,4 +51,6 @@ funcionarios = [dono]
 
 while True:
     funcionario_atual = fazer_login()
-    sistema()
+    while True:
+        escolha_sistema = sistema()
+        if escolha_sistema == 99: break
