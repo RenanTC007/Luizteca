@@ -30,6 +30,7 @@ def sistema():
     print("[4] Cadastrar cliente.")
     print("[5] Adicionar publicação.")
     print("[6] Adicionar exemplar.")
+    print("[7] Emprestar exemplar.")
     
     print("[99] Sair da conta.")
     condicao = True
@@ -63,10 +64,15 @@ def sistema():
             if len(publicacoes) == 0: print("Não há publicações cadastradas. Por favor, cadastre uma publicação primeiro.")
             else: 
                 funcionario_atual.adicionar_exemplar(publicacoes)
+        case 7:
+            while True:
+                i = 1
+                for p in publicacoes:
+                    print(f"[i] {p.titulo}, ISBN {p.isbn}")
         return escolha
 
 # Cadastrando o dono com a senha padrão
-dono = Dono("Luiz de Moraes Sampaio", "426.704.238-17", "Guarulhos", "(11) 94318-6452", "luiz.sampaio@yahoo.com.br", 2, SENHA_PADRAO)
+dono = Dono("Luiz de Moraes Sampaio", "426.704.238-17", "Guarulhos", "(11) 96061-8848", "luiz.sagitario@yahoo.com.br", 2, SENHA_PADRAO)
 funcionarios = [dono]
 clientes = []
 publicacoes = []

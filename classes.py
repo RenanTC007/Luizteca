@@ -120,6 +120,12 @@ class Publicacao:
     def quantidade_exemplares(self):
         return len(self.exemplares)
 
+    def quantidade_exemplares_emprestados(self):
+        i = 0
+        for e in self.exemplares:
+            if e.emprestado: i += 1
+        return i
+
     def tipo(self):
         pass
 
