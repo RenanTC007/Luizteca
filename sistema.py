@@ -29,6 +29,7 @@ def sistema():
     print("[3] Mudar sua senha.")
     print("[4] Cadastrar cliente.")
     print("[5] Adicionar publicação.")
+    print("[6] Adicionar exemplar.")
     
     print("[99] Sair da conta.")
     condicao = True
@@ -58,7 +59,11 @@ def sistema():
         case 5:
             nova_publicacao = funcionario_atual.adicionar_publicacao()
             publicacoes.append(nova_publicacao)
-    return escolha
+        case 6:
+            if len(publicacoes) == 0: print("Não há publicações cadastradas. Por favor, cadastre uma publicação primeiro.")
+            else: 
+                funcionario_atual.adicionar_exemplar(publicacoes)
+        return escolha
 
 # Cadastrando o dono com a senha padrão
 dono = Dono("Luiz de Moraes Sampaio", "426.704.238-17", "Guarulhos", "(11) 94318-6452", "luiz.sampaio@yahoo.com.br", 2, SENHA_PADRAO)

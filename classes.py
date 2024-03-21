@@ -49,7 +49,7 @@ class Funcionario(Pessoa):
                 print("Você digitou algo errado. Tente novamente.")
         match tipo:
             case 1:
-                volume = input("Volume:")
+                volume = input("Volume: ")
                 return Livro(autor, editora, ano, titulo, genero, isbn, volume)
             case 2:
                 semana = input("Semana: ")
@@ -57,6 +57,26 @@ class Funcionario(Pessoa):
             case 3:
                 dia = input("Dia: ")
                 return Jornal(autor, editora, ano, titulo, genero, isbn, dia)
+        print("Nova publicação adicionada com sucesso. Agora adicione exemplares desta publicação.")
+
+    def adicionar_exemplar(self, lista):
+        print("Adicionando um novo exemplar. Escolha um número correspondente à publicação que está sendo cadastrada:")
+        i = 1
+        for p in lista:
+            print(f"[{i}] {p.titulo}, ISBN {p.isbn}, {p.tipo()}.")
+            i += 1
+        n = 0
+        while True:
+            try:
+                n = int(input())
+                if n < 1 or n > len(lista): raise Exception()
+                break
+            except:
+                print(f"Digite um número inteiro entre 1 e {len(lista)}. Tente novamente.")
+                pass
+        lista[n-1].exemplares.append(Exemplar())
+        print(f"Exemplar do {lista[n-1].tipo()} {lista[n-1].titulo} adicionado com sucesso.")
+        
 
 class Dono(Funcionario):
     def __init__(self, nome, cpf, endereco, telefone, email, salario, senha):
@@ -128,11 +148,11 @@ class Jornal(Publicacao):
         return "Jornal"
 
 class Exemplar:
-    def __init__(self, funcionario, data_devolucao):
-        self.funcionario = funcionario
-        self.data_devolucao = data_devolucao
+    def __init__(self):
         self.emprestado = False
-    def emprestar_exemplar(self):
+    def emprestar_exemplar(self, funcionario):
+        self.funcionario = funcionario
         self.emprestado = True
-    def devolver_exemplar(self):
+    def devolver_exemplar(self, data_devolucao):
+        self.data_devolucao = data_devolucao
         self.emprestado = False
