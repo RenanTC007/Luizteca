@@ -3,7 +3,7 @@ from hashlib import sha256
 from classes import *
 
 def fazer_login():
-    print("Bem-vindo. Faça login:")
+    print("Bem-vindo. Faça login, ou saia com o atalho CTRL+C.")
     condicao = True
     while condicao:
         email = input("Digite seu e-mail: ")
@@ -28,6 +28,8 @@ def sistema():
     print("[2] Demitir funcionário.")
     print("[3] Mudar sua senha.")
     print("[4] Cadastrar cliente.")
+    print("[5] Adicionar publicação.")
+    
     print("[99] Sair da conta.")
     condicao = True
     while condicao:
@@ -53,12 +55,16 @@ def sistema():
             funcionario_atual.mudar_senha()
         case 4:
             clientes.append(funcionario_atual.cadastrar_cliente())
+        case 5:
+            nova_publicacao = funcionario_atual.adicionar_publicacao()
+            publicacoes.append(nova_publicacao)
     return escolha
 
 # Cadastrando o dono com a senha padrão
 dono = Dono("Luiz de Moraes Sampaio", "426.704.238-17", "Guarulhos", "(11) 94318-6452", "luiz.sampaio@yahoo.com.br", 2, SENHA_PADRAO)
 funcionarios = [dono]
 clientes = []
+publicacoes = []
 
 while True:
     funcionario_atual = fazer_login()

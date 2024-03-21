@@ -31,6 +31,33 @@ class Funcionario(Pessoa):
         print("Mudando sua senha.")
         self.senha = sha256(getpass("Digite uma nova senha: ").encode()).hexdigest()
 
+    def adicionar_publicacao(self):
+        while True:
+            print("Adicionando uma nova publicação.")
+            try:
+                tipo = int(input("Tipo da publicação. Digite 1 para LIVRO, 2 para REVISTA e 3 para JORNAL: "))
+                if tipo < 1 or tipo > 3: raise Exception()
+                autor = input("Autor: ")
+                editora = input("Editora: ")
+                ano = int(input("Ano de publicação: "))
+                titulo = input("Título: ")
+                genero = input("Gênero: ")
+                isbn = input("ISBN: ")
+
+                break
+            except:
+                print("Você digitou algo errado. Tente novamente.")
+        match tipo:
+            case 1:
+                volume = input("Volume:")
+                return Livro(autor, editora, ano, titulo, genero, isbn, volume)
+            case 2:
+                semana = input("Semana: ")
+                return Revista(autor, editora, ano, titulo, genero, isbn, semana)
+            case 3:
+                dia = input("Dia: ")
+                return Jornal(autor, editora, ano, titulo, genero, isbn, dia)
+
 class Dono(Funcionario):
     def __init__(self, nome, cpf, endereco, telefone, email, salario, senha):
         super().__init__(nome, cpf, endereco, telefone, email, salario, senha)
@@ -68,18 +95,44 @@ class Publicacao:
         self.titulo = titulo
         self.genero = genero
         self.isbn = isbn
+        self.exemplares = []
+
+    def quantidade_exemplares(self):
+        return len(self.exemplares)
+
+    def tipo(self):
+        pass
 
 class Livro(Publicacao):
     def __init__(self, autor, editora, ano, titulo, genero, isbn, volume):
         super().__init__(autor, editora, ano, titulo, genero, isbn)
         self.volume = volume
 
+    def tipo(self):
+        return "Livro"
+
 class Revista(Publicacao):
     def __init__(self, autor, editora, ano, titulo, genero, isbn, semana):
         super().__init__(autor, editora, ano, titulo, genero, isbn)
         self.semana = semana
 
+    def tipo(self):
+        return "Revista"
+
 class Jornal(Publicacao):
     def __init__(self, autor, editora, ano, titulo, genero, isbn, dia):
         super().__init__(autor, editora, ano, titulo, genero, isbn)
         self.dia = dia
+
+    def tipo(self):
+        return "Jornal"
+
+class Exemplar:
+    def __init__(self, funcionario, data_devolucao):
+        self.funcionario = funcionario
+        self.data_devolucao = data_devolucao
+        self.emprestado = False
+    def emprestar_exemplar(self):
+        self.emprestado = True
+    def devolver_exemplar(self):
+        self.emprestado = False
