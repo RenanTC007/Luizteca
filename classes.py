@@ -129,6 +129,13 @@ class Publicacao:
     def tipo(self):
         pass
 
+    def listar_exemplares_emprestados(self):
+        i = 1
+        for e in self.exemplares:
+            if e.emprestado:
+                print(f"[{i}] Emprestado para {e.cliente.nome}.")
+                i += 1
+
 class Livro(Publicacao):
     def __init__(self, autor, editora, ano, titulo, genero, isbn, volume):
         super().__init__(autor, editora, ano, titulo, genero, isbn)
@@ -156,9 +163,11 @@ class Jornal(Publicacao):
 class Exemplar:
     def __init__(self):
         self.emprestado = False
-    def emprestar_exemplar(self, funcionario):
+        self.cliente = None
+    def emprestar_exemplar(self, funcionario, cliente):
         self.funcionario = funcionario
         self.emprestado = True
+        self.cliente = cliente
     def devolver_exemplar(self, data_devolucao):
         self.data_devolucao = data_devolucao
         self.emprestado = False
