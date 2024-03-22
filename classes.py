@@ -102,9 +102,10 @@ class Dono(Funcionario):
         while True:
             cpf = input("Digite o CPF do funcionário que você quer demitir: ")
             for funcionario in lista_funcionarios:
-                if funcionario.cpf == cpf: 
-                    print("Funcionário", funcionario.nome, "demitido com sucesso.")
-                    return funcionario
+                if funcionario != self:
+                    if funcionario.cpf == cpf: 
+                        print("Funcionário", funcionario.nome, "demitido com sucesso.")
+                        return funcionario
             print("Nenhum funcionário encontrado com esse CPF. Tente novamente.")
 
 class Publicacao:

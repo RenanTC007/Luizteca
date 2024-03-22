@@ -59,7 +59,8 @@ def sistema():
                 print("Você não tem permissões para cadastrar funcionários.")
         case 2:
             if funcionario_atual == dono:
-                funcionarios.remove(dono.remover_funcionario(funcionarios))
+                if len(funcionarios) == 1: print("Não há outros funcionários cadastrados.")
+                else: funcionarios.remove(dono.remover_funcionario(funcionarios))
             else:
                 print("Você não tem permissão para remover funcionários.")
         case 3:
