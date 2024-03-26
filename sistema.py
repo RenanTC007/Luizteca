@@ -2,6 +2,10 @@ from getpass import getpass
 from hashlib import sha256
 import datetime
 from classes import *
+import os
+
+def clear():
+    os.system("clear")
 
 def fazer_login():
     print("Bem-vindo. Faça login, ou saia com o atalho CTRL+C.")
@@ -23,10 +27,12 @@ def fazer_login():
             else: print("Senha incorreta. Tente novamente.")
     return funcionario_atual
 
-def listar_publicacoes():
+def listar_publicacoes(nome=""):
     i = 1
+    nome = nome.lower()
     for p in publicacoes:
-        print(f"[i] {p.titulo}, ISBN {p.isbn}")
+        if nome in p.titulo.lower():
+            print(f"[{i}] {p.titulo}, ISBN {p.isbn}")
         i += 1
 
 def sistema():
@@ -39,26 +45,26 @@ def sistema():
     print("[6] Adicionar exemplar.")
     print("[7] Emprestar exemplar.")
     print("[8] Devolver exemplar.")
-    print("[9] Buscar número da publicação por título.")
+    print("[9] Buscar publicação por título.")
+    print("[10] Listar funcionários.")
     
     print("[99] Sair da conta.")
-    condicao = True
-    while condicao:
+    
+    while True:
         try:
             escolha = int(input("O que você deseja fazer? "))
-            condicao = (escolha < 1 or escolha > 99)
-            if condicao: raise Exception()
+            break
         except:
-            print("Você digitou uma opção inválida. Tente novamente.")
+            print("Você não digitou um número. Tente novamente.")
 
     match escolha:
         case 1:
-            if funcionario_atual == dono:
+            if e_dono:
                 funcionarios.append(dono.cadastrar_funcionario())
             else:
                 print("Você não tem permissões para cadastrar funcionários.")
         case 2:
-            if funcionario_atual == dono:
+            if e_dono:
                 if len(funcionarios) == 1: print("Não há outros funcionários cadastrados.")
                 else: funcionarios.remove(dono.remover_funcionario(funcionarios))
             else:
@@ -127,6 +133,18 @@ def sistema():
                     break
                 except:
                     print("Você digitou um número fora do intervalo permitido ou não digitou um número. Tente novamente.")
+        case 9:
+            nome = input("Digite parte do nome da publicação: ")
+            print("Publicações encontradas: ")
+            listar_publicacoes(nome)
+        case 10:
+            if e_dono:
+                # Listar funcionários aqui.
+                pass
+            else:
+                print("Você não tem permissão para realizar esta ação.")
+        case _:
+            print("Você não digitou uma opção válida.")
     return escolha
 
 # Cadastrando o dono com a senha padrão
@@ -137,6 +155,9 @@ publicacoes = []
 
 while True:
     funcionario_atual = fazer_login()
+    e_dono = funcionario_atual == dono
     while True:
         escolha_sistema = sistema()
+        if escolha_sistema != 99: input("Aperte ENTER para continuar...")
+        clear()
         if escolha_sistema == 99: break
