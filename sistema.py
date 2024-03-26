@@ -3,11 +3,13 @@ from hashlib import sha256
 import datetime
 from classes import *
 import os
+import json
 
 SEM_PERMISSAO = "Você não tem permissão para realizar esta ação."
 
-def clear():
-    os.system("clear") # Limpa a tela.
+def clear(): # Limpa a tela.
+    if os.name == "nt": os.system("cls")
+    else: os.system("clear")
 
 def fazer_login():
     print("Bem-vindo. Faça login, ou saia com o atalho CTRL+C.")
@@ -100,6 +102,9 @@ def sistema(): # Chamado até sair da conta.
                 try:
                     if len(publicacoes) == 0:
                         print("Nenhuma publicação no sistema.")
+                        break
+                    if len(clientes) == 0:
+                        print("Não há clientes cadastrados.")
                         break
                     listar_publicacoes()
                     n = int(input("Escolha uma dessas publicações para emprestar: "))
@@ -212,12 +217,18 @@ def sistema(): # Chamado até sair da conta.
             print("Você não digitou uma opção válida.")
     return escolha
 
+def carregar_arquivo_funcionarios():
+    f = open("funcionarios.json", "r")
+    
+
 # Cadastrando o dono com a senha padrão
 dono = Dono("Luiz de Moraes Sampaio", "426.704.238-17", "Guarulhos", "(11) 96061-8848", "luiz.sagitario@yahoo.com.br", 2, SENHA_PADRAO)
 funcionarios = [dono] # Primeiro funcionário cadastrado é o dono.
 clientes = []
 publicacoes = []
 multar = []
+
+# carregar_arquivo_funcionarios()
 
 while True: # Loop do sistema
     funcionario_atual = fazer_login()

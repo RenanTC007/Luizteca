@@ -79,7 +79,7 @@ class Dono(Funcionario):
     def __init__(self, nome, cpf, endereco, telefone, email, salario, senha):
         super().__init__(nome, cpf, endereco, telefone, email, salario, senha)
     
-    def cadastrar_funcionario(self):
+    def cadastrar_funcionario(self, funcionarios):
         while True:
             try:
                 print("Cadastrando um novo funcionário.")
@@ -88,13 +88,15 @@ class Dono(Funcionario):
                 endereco = input("Endereço: ")
                 telefone = input("Número de telefone: ")
                 email = input("E-mail: ")
+                for fun in funcionarios:
+                    pass
                 salario = float(input("Salário [apenas números]: "))
                 if salario > TETO_SALARIAL: raise Exception()
                 senha = SENHA_PADRAO
                 print("Funcionário", nome, "cadastrado com sucesso. A senha padrão é 123.")
                 return Funcionario(nome, cpf, endereco, telefone, email, salario, senha) # Retorna um objeto Funcionário
             except:
-                print("O salário deve ser um número menor que", TETO_SALARIAL, " Tente novamente.")
+                print(f"O salário deve ser um número menor que {TETO_SALARIAL}. Tente novamente.")
     
     def remover_funcionario(self, lista_funcionarios):
         while True:
