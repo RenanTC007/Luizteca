@@ -12,6 +12,9 @@ class Pessoa:
         self.telefone = telefone
         self.email = email
 
+    def __str__(self):
+        return f"Nome: {self.nome}\nCPF: {self.cpf}\nEndereço: {self.endereco}\nTelefone: {self.telefone}\nE-mail: {self.email}"
+
 class Funcionario(Pessoa):
     def __init__(self, nome, cpf, endereco, telefone, email, salario, senha):
         super().__init__(nome, cpf, endereco, telefone, email)
@@ -73,7 +76,9 @@ class Funcionario(Pessoa):
         p = lista[n-1]
         p.exemplares.append(Exemplar()) # Adiciona um novo objeto Exemplar à publicação.
         print(f"Exemplar do {p.tipo()} {p.titulo} adicionado com sucesso.")
-        
+
+    def __str__(self):
+        return super().__str__() + f"\nSalário: R${self.salario}"
 
 class Dono(Funcionario):
     def __init__(self, nome, cpf, endereco, telefone, email, salario, senha):

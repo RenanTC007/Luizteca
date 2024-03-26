@@ -44,6 +44,11 @@ def listar_funcionarios():
         print(f"[{i}] {fun.nome}, CPF {fun.cpf}")
         i += 1
 
+def listar_clientes():
+    i = 1
+    for c in clientes:
+        print(f"[{i}] {c.nome}, CPF {c.cpf}")
+        i += 1
 
 def sistema(): # Chamado até sair da conta.
     print(f"Bem-vindo {funcionario_atual.nome}. Opções disponíveis: ")
@@ -57,9 +62,10 @@ def sistema(): # Chamado até sair da conta.
     print("[8] Devolver exemplar.")
     print("[9] Buscar publicação por título.")
     print("[10] Listar funcionários.")
-    print("[11] Alterar dados de um funcionário.")
-    print("[12] Listar exemplares emprestados.")
-    print("[13] Multar exemplares não conservados.")
+    print("[11] Listar exemplares emprestados.")
+    print("[12] Multar exemplares não conservados.")
+    print("[13] Ver detalhes de um cliente.")
+    print("[14] Ver detalhes de um funcionário.")
     
     print("[99] Sair da conta.")
     
@@ -166,7 +172,7 @@ def sistema(): # Chamado até sair da conta.
                 except:
                     print("Você digitou um número fora do intervalo permitido ou não digitou um número. Tente novamente.")
         case 9:
-            nome = input("Digite parte do nome da publicação: ")
+            nome = input("Digite parte do nome da publicação (ou deixe vazio para listar todas): ")
             print("Publicações encontradas: ")
             listar_publicacoes(nome)
         case 10:
@@ -175,19 +181,20 @@ def sistema(): # Chamado até sair da conta.
                 listar_funcionarios()
             else:
                 print(SEM_PERMISSAO)
+#        case 11:
+#            if e_dono:
+#                listar_funcionarios()
+#                while True:
+#                    try:
+#                        n = int(input("Escolha um funcionário para alterar seus dados: "))
+#                        if n < 1 or n > len(funcionarios): raise Exception()
+#                        break
+#                        # Ainda precisamos programar isso
+#                    except:
+#                        print("Você digitou algo errado. Tente novamente.")
+#            else:
+#                print(SEM_PERMISSAO)
         case 11:
-            if e_dono:
-                listar_funcionarios()
-                while True:
-                    try:
-                        n = int(input("Escolha um funcionário para alterar seus dados: "))
-                        if n < 1 or n > len(funcionarios): raise Exception()
-                        # Ainda precisamos programar isso
-                    except:
-                        print("Você digitou algo errado. Tente novamente.")
-            else:
-                print(SEM_PERMISSAO)
-        case 12:
             print("Exemplares emprestados:")
             i = 1
             for p in publicacoes: # Procura nas publicações
@@ -195,7 +202,7 @@ def sistema(): # Chamado até sair da conta.
                     if e.emprestado:
                         print("[{i}] {p.tipo()} {p.titulo} ISBN {p.isbn}, emprestado por {e.funcionario} no dia {e.data_emprestimo}.")
                         i += 1
-        case 13:
+        case 12:
             if e_dono:
                 print("Entre em contato com um dos clientes abaixo e dê baixa escolhendo uma das opções abaixo.")
                 while True:
@@ -209,6 +216,34 @@ def sistema(): # Chamado até sair da conta.
                         if escolha < 1 or escolha > len(multar): raise Exception()
                         multar.remove(multar[n-1])
                         print("Sucesso.")
+                    except:
+                        print("Você digitou algo errado. Tente novamente.")
+            else:
+                print(SEM_PERMISSAO)
+        case 13:
+            if len(clientes) != 0:
+                while True:
+                    try:
+                        listar_clientes()
+                        n = int(input("Escolha um cliente para ver detalhes: "))
+                        if n < 1 or n > len(clientes): raise Exception()
+                        cliente = clientes[n-1]
+                        print(cliente)
+                        break
+                    except:
+                        print("Você digitou algo errado. Tente novamente.")
+            else:
+                print("Não há clientes cadastrados.")
+        case 14:
+            if e_dono:
+                while True:
+                    try:
+                        listar_funcionarios()
+                        n = int(input("Escolha um funcionário para ver detalhes: "))
+                        if n < 1 or n > len(funcionarios): raise Exception()
+                        fun = funcionarios[n-1]
+                        print(fun)
+                        break
                     except:
                         print("Você digitou algo errado. Tente novamente.")
             else:
