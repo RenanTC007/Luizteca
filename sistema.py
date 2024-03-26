@@ -113,12 +113,12 @@ def sistema(): # Chamado até sair da conta.
                         # Pede-se o CPF por motivos de segurança: não é muito legal o funcionário ter acesso a todos os clientes.
                         cpf = int(input("Qual cliente quer pegar este título emprestado? Digite o CPF (com pontuação): "))
                         cliente = 0
-                        for c in clientes:
+                        for c in clientes: # Verifica todos os clientes em busca de um CPF.
                             if c.cpf == cpf: cliente = c
                         if cliente == 0:
                             print("O CPF digitado não foi encontrado. Certifique-se de digitar o CPF com pontuação.")
                             raise Exception()
-                        for e in p.exemplares:
+                        for e in p.exemplares: # Procura nos exemplares da publicação e empresta um.
                             if e.emprestado == False:
                                 e.emprestar_exemplar(funcionario_atual, datetime.datetime.now())
                                 break
@@ -135,22 +135,26 @@ def sistema(): # Chamado até sair da conta.
                     listar_publicacoes()
                     n = int(input("Digite o número da publicação que está sendo devolvida: "))
                     if n < 1 or n > len(publicacoes): raise Exception()
+
                     if p.quantidade_exemplares_emprestados() == 0:
                         print("Nenhum exemplar desta publicação foi emprestado.")
                         break
+
                     p = publicacoes[n-1]
                     p.listar_exemplares_emprestados()
                     n = int(input("Selecione um dos exemplares emprestados para devolver: "))
                     if n < 1 or n > p.quantidade_exemplares_emprestados():
                         raise Exception()
-                    e = p.exemplares[n-1]
+
+                    e = p.exemplares[n-1] # Exemplar escolhido.
                     estado = int(input("Qual é o estado de conservação deste exemplar?\n[1] Conservado.\n[2] Não conservado."))
                     if estado < 1 or estado > 2: raise Exception()
+
                     e.devolver_exemplar(datetime.datetime.now())
                     if estado == 2: 
                         print("Uma multa será aplicada ao cliente de acordo com o dono da biblioteca.")
                         print("Exemplar removido do sistema.")
-                        multar.append([p, e])
+                        multar.append([p, e]) # Anexa o exemplar e a publicação para o dono multar.
                         p.exemplares.remove(e)
                     print("Exemplar devolvido em", datetime.datetime.now(),"com sucesso.")
                     break
@@ -166,8 +170,6 @@ def sistema(): # Chamado até sair da conta.
                 listar_funcionarios()
             else:
                 print(SEM_PERMISSAO)
-        case _:
-            print("Você não digitou uma opção válida.")
         case 11:
             if e_dono:
                 listar_funcionarios()
@@ -183,8 +185,8 @@ def sistema(): # Chamado até sair da conta.
         case 12:
             print("Exemplares emprestados:")
             i = 1
-            for p in publicacoes:
-                for e in p.exemplares():
+            for p in publicacoes: # Procura nas publicações
+                for e in p.exemplares(): # Procura nos exemplares
                     if e.emprestado:
                         print("[{i}] {p.tipo()} {p.titulo} ISBN {p.isbn}, emprestado por {e.funcionario} no dia {e.data_emprestimo}.")
                         i += 1
@@ -206,18 +208,20 @@ def sistema(): # Chamado até sair da conta.
                         print("Você digitou algo errado. Tente novamente.")
             else:
                 print(SEM_PERMISSAO)
+        case _:
+            print("Você não digitou uma opção válida.")
     return escolha
 
 # Cadastrando o dono com a senha padrão
 dono = Dono("Luiz de Moraes Sampaio", "426.704.238-17", "Guarulhos", "(11) 96061-8848", "luiz.sagitario@yahoo.com.br", 2, SENHA_PADRAO)
-funcionarios = [dono]
+funcionarios = [dono] # Primeiro funcionário cadastrado é o dono.
 clientes = []
 publicacoes = []
 multar = []
 
-while True:
+while True: # Loop do sistema
     funcionario_atual = fazer_login()
-    e_dono = funcionario_atual == dono
+    e_dono = funcionario_atual == dono # A variável e_dono (é dono) diz se o funcionário logado é dono.
     while True:
         escolha_sistema = sistema()
         if escolha_sistema != 99: input("Aperte ENTER para continuar...")
