@@ -42,7 +42,7 @@ def listar_funcionarios():
     i = 1
     for fun in funcionarios:
         print(f"[{i}] {fun.nome}, CPF {fun.cpf}")
-    i += 1
+        i += 1
 
 
 def sistema(): # Chamado até sair da conta.

@@ -89,14 +89,18 @@ class Dono(Funcionario):
                 telefone = input("Número de telefone: ")
                 email = input("E-mail: ")
                 for fun in funcionarios:
-                    pass
+                    if email == fun.email:
+                        print("Este e-mail já está cadastrado.")
+                        raise Exception()
                 salario = float(input("Salário [apenas números]: "))
-                if salario > TETO_SALARIAL: raise Exception()
+                if salario > TETO_SALARIAL:
+                    print(f"O salário deve ser um número menor que {TETO_SALARIAL}.")
+                    raise Exception()
                 senha = SENHA_PADRAO
                 print("Funcionário", nome, "cadastrado com sucesso. A senha padrão é 123.")
                 return Funcionario(nome, cpf, endereco, telefone, email, salario, senha) # Retorna um objeto Funcionário
             except:
-                print(f"O salário deve ser um número menor que {TETO_SALARIAL}. Tente novamente.")
+                print(f"Tente novamente.")
     
     def remover_funcionario(self, lista_funcionarios):
         while True:
