@@ -73,7 +73,7 @@ def sistema(): # Chamado até sair da conta.
     match escolha:
         case 1:
             if e_dono:
-                funcionarios.append(dono.cadastrar_funcionario()) # Adiciona o funcionário cadastrado na lista de funcionários.
+                funcionarios.append(dono.cadastrar_funcionario(funcionarios)) # Adiciona o funcionário cadastrado na lista de funcionários.
             else:
                 print(SEM_PERMISSAO) # Se não for dono, mostrar que não tem permissão.
         case 2:
