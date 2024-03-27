@@ -263,9 +263,11 @@ def carregar_arquivos():
             funcionarios.append(o)
 
 def salvar_arquivos():
+    funcionarios.remove(dono)
     with open('funcionarios.pkl', 'wb') as outp:
         for fun in funcionarios:
             pickle.dump(fun, outp, pickle.HIGHEST_PROTOCOL)
+    funcionarios.append(dono)
 
 # Cadastrando o dono com a senha padrão
 dono = Dono("Luiz de Moraes Sampaio", "426.704.238-17", "Guarulhos", "(11) 96061-8848", "luiz.sagitario@yahoo.com.br", 2, SENHA_PADRAO)
@@ -285,6 +287,5 @@ while True: # Loop do sistema
         if escolha_sistema != 99: input("Aperte ENTER para continuar...")
         clear()
         if escolha_sistema == 99: 
-            funcionarios.remove(dono)
             salvar_arquivos()
             break
