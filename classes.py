@@ -143,7 +143,7 @@ class Publicacao:
         i = 1
         for e in self.exemplares:
             if e.emprestado:
-                print(f"[{i}] Emprestado para {e.cliente.nome} no dia {e.data_emprestimo} por {e.funcionario}.")
+                print(f"[{i}] Emprestado para {e.cliente.nome} no dia {e.data_emprestimo} por {e.funcionario.nome} (CPF {e.funcionario.nome}).")
                 i += 1
 
 class Livro(Publicacao):
