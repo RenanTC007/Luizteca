@@ -102,8 +102,8 @@ def sistema(): # Chamado até sair da conta.
             if len(publicacoes) == 0: # 0 publicações cadastradas, não dá para adicionar exemplares.
                 print("Não há publicações cadastradas. Por favor, cadastre uma publicação primeiro.")
             else: 
-                print("Adicionando um novo exemplar. Escolha um número correspondente à publicação que está sendo cadastrada:")
                 listar_publicacoes()
+                print("Escolha um número correspondente à publicação que está sendo cadastrada:")
                 funcionario_atual.adicionar_exemplar(publicacoes)
         case 7:
             while True:
@@ -161,7 +161,7 @@ def sistema(): # Chamado até sair da conta.
                         raise Exception()
 
                     e = p.exemplares[n-1] # Exemplar escolhido.
-                    estado = int(input("Qual é o estado de conservação deste exemplar?\n[1] Conservado.\n[2] Não conservado."))
+                    estado = int(input("Qual é o estado de conservação deste exemplar?\n[1] Conservado.\n[2] Não conservado.\nResposta: "))
                     if estado < 1 or estado > 2: raise Exception()
 
                     e.devolver_exemplar(datetime.datetime.now())
@@ -214,11 +214,12 @@ def sistema(): # Chamado até sair da conta.
                         for m in multar:
                             p = m[0]
                             e = m[1]
-                            print(f"[{i}] {p.tipo()} {p.titulo}, ISBN {p.isbn}, emprestado por {e.funcionario} para {e.cliente.nome} com CPF {e.cliente.cpf} e número de telefone {e.cliente.telefone}, emprestado no dia {e.data_emprestimo} e devolvido no dia {e.data_devolucao}.")
+                            print(f"[{i}] {p.tipo()} {p.titulo}, ISBN {p.isbn}, emprestado por {e.funcionario.nome} (CPF {e.funcionario.cpf}) para {e.cliente.nome} com CPF {e.cliente.cpf} e número de telefone {e.cliente.telefone}, emprestado no dia {e.data_emprestimo} e devolvido no dia {e.data_devolucao}.")
                         escolha = int(input("Qual dos exemplares você quer dar baixa? "))
                         if escolha < 1 or escolha > len(multar): raise Exception()
                         multar.remove(multar[n-1])
                         print("Sucesso.")
+                        break
                     except:
                         print("Você digitou algo errado. Tente novamente.")
             else:
@@ -256,6 +257,7 @@ def sistema(): # Chamado até sair da conta.
                 try:
                     nome = input("Digite parte do nome da publicação que você quer remover: ")
                     listar_publicacoes(nome)
+                    
                 except:
                     pass
         case 16:
