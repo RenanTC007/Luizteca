@@ -42,12 +42,15 @@ class Funcionario(Pessoa):
             try:
                 tipo = int(input("Escolha o tipo da publicação. Digite 1 para LIVRO, 2 para REVISTA e 3 para JORNAL: "))
                 if tipo < 1 or tipo > 3: raise Exception() # Jogar um erro de o tipo não estiver entre 1 e 3.
+                titulo = input("Título: ")
                 autor = input("Autor: ")
                 editora = input("Editora: ")
-                ano = int(input("Ano de publicação: "))
-                titulo = input("Título: ")
+                edicao = int(input("Edição (apenas números inteiros): "))
+                ano = int(input("Ano de publicação (apenas números inteiros): "))
+                qntd = int(input("Quantidade de exemplares (apenas números inteiros): "))
                 genero = input("Gênero: ")
                 isbn = input("ISBN: ")
+                print("Publicação adicionada com sucesso.")
                 break
             except:
                 print("Você digitou algo errado. Tente novamente.")
@@ -55,13 +58,13 @@ class Funcionario(Pessoa):
         match tipo:
             case 1:
                 volume = input("Volume: ")
-                return Livro(autor, editora, ano, titulo, genero, isbn, volume)
+                return Livro(autor, editora, edicao, ano, titulo, genero, isbn, qntd, volume)
             case 2:
                 semana = input("Semana: ")
-                return Revista(autor, editora, ano, titulo, genero, isbn, semana)
+                return Revista(autor, editora, edicao, ano, titulo, genero, isbn, qntd, semana)
             case 3:
                 dia = input("Dia: ")
-                return Jornal(autor, editora, ano, titulo, genero, isbn, dia)
+                return Jornal(autor, editora, edicao, ano, titulo, genero, isbn, qntd, dia)
         print("Nova publicação adicionada com sucesso. Agora adicione exemplares desta publicação.")
 
     def adicionar_exemplar(self, lista):
@@ -69,13 +72,17 @@ class Funcionario(Pessoa):
             try:
                 n = int(input())
                 if n < 1 or n > len(lista): raise Exception() # A publicação deve estar na lista de publicações.
-                break
             except:
                 print(f"Digite um número inteiro entre 1 e {len(lista)}. Tente novamente.")
-                pass
+            try:
+                qntd = int(input("Digite a quantidade de exemplares a serem adicionados: "))
+                if qntd < 1: raise Exception()
+                break
+            except:
+                print("Digite um número inteiro positivo.")
         p = lista[n-1]
-        p.exemplares.append(Exemplar()) # Adiciona um novo objeto Exemplar à publicação.
-        print(f"Exemplar do {p.tipo()} {p.titulo} adicionado com sucesso.")
+        p.adicionar_exemplar(qntd)
+        print(f"{qntd} exemplar(es) do {p.tipo()} {p.titulo} adicionado(s) com sucesso.")
 
     def __str__(self):
         return super().__str__() + f"\nSalário: R${self.salario}"
@@ -118,15 +125,17 @@ class Dono(Funcionario):
             print("Nenhum funcionário encontrado com esse CPF. Tente novamente.")
 
 class Publicacao:
-    def __init__(self, autor, editora, ano, titulo, genero, isbn):
+    def __init__(self, autor, editora, edicao, ano, titulo, genero, isbn, qntd_exemplares):
         self.autor = autor
         self.editora = editora
+        self.edicao = edicao
         self.ano = ano
         self.titulo = titulo
         self.genero = genero
         self.isbn = isbn
         self.exemplares = [] # Lista de exemplares desta publicação.
-
+        self.adicionar_exemplar(qntd_exemplares)
+        
     def quantidade_exemplares(self):
         return len(self.exemplares)
 
@@ -146,29 +155,45 @@ class Publicacao:
                 print(f"[{i}] Emprestado para {e.cliente.nome} no dia {e.data_emprestimo} por {e.funcionario.nome} (CPF {e.funcionario.cpf}).")
                 i += 1
 
+    def adicionar_exemplar(self, qntd):
+        for i in range(qntd):
+            self.exemplares.append(Exemplar()) # Adiciona um novo objeto Exemplar à publicação.
+
+    def __str__(self):
+        return f"Autor: {self.autor}\nEditora: {self.editora}\nEdição: {self.edicao}\nAno: {self.ano}\nTítulo: {self.titulo}\nGênero: {self.genero}\nISBN: {self.isbn}"
+
 class Livro(Publicacao):
-    def __init__(self, autor, editora, ano, titulo, genero, isbn, volume):
-        super().__init__(autor, editora, ano, titulo, genero, isbn)
+    def __init__(self, autor, editora, edicao, ano, titulo, genero, isbn, qntd, volume):
+        super().__init__(autor, editora, edicao, ano, titulo, genero, isbn, qntd)
         self.volume = volume
 
     def tipo(self):
         return "Livro"
 
+    def __str__(self):
+        return super().__str__() + f"\nVolume: {self.volume}"
+
 class Revista(Publicacao):
-    def __init__(self, autor, editora, ano, titulo, genero, isbn, semana):
-        super().__init__(autor, editora, ano, titulo, genero, isbn)
+    def __init__(self, autor, editora, edicao, ano, titulo, genero, isbn, qntd, semana):
+        super().__init__(autor, editora, edicao, ano, titulo, genero, isbn, qntd)
         self.semana = semana
 
     def tipo(self):
         return "Revista"
 
+    def __str__(self):
+        return super().__str__() + f"\nSemana: {self.semana}"
+        
 class Jornal(Publicacao):
-    def __init__(self, autor, editora, ano, titulo, genero, isbn, dia):
-        super().__init__(autor, editora, ano, titulo, genero, isbn)
+    def __init__(self, autor, editora, edicao, ano, titulo, genero, isbn, qntd, dia):
+        super().__init__(autor, editora, edicao, ano, titulo, genero, isbn, qntd)
         self.dia = dia
 
     def tipo(self):
         return "Jornal"
+
+    def __str__(self):
+        return super().__str__() + f"\nDia: {self.dia}"
 
 class Exemplar: # Cada publicação tem uma lista de exemplares com objetos desta classe. Assim é possível ter vários exemplares de uma mesma publicação.
     def __init__(self):

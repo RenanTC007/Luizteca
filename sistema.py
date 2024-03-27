@@ -5,18 +5,20 @@ from classes import *
 import os
 import pickle
 
+# Cadastrando o dono com a senha padrão
 SEM_PERMISSAO = "Você não tem permissão para realizar esta ação."
+DONO_PADRAO = Dono("Luiz de Moraes Sampaio", "426.704.238-17", "Guarulhos", "(11) 96061-8848", "luiz.sagitario@yahoo.com.br", 2, SENHA_PADRAO)
 
 def clear(): # Limpa a tela.
     if os.name == "nt": os.system("cls")
     else: os.system("clear")
 
 def fazer_login():
-    print("Bem-vindo. Faça login, ou saia com o atalho CTRL+C.")
+    print("Bem-vindo. Faça login ou deixe vazio para sair.")
     while True:
         email = input("Digite seu e-mail: ")
         senha = sha256(getpass("Digite sua senha: ").encode()).hexdigest() # Lê a senha sem mostrar na tela com GETPASS e a criptografa com SHA256.
-
+        if email == "": quit()
         funcionario_atual = 0
         for funcionario in funcionarios: # Procura um funcionário com o email digitado.
             if funcionario.email == email: funcionario_atual = funcionario
@@ -184,29 +186,16 @@ def sistema(): # Chamado até sair da conta.
                 listar_funcionarios()
             else:
                 print(SEM_PERMISSAO)
-#        case 11:
-#            if e_dono:
-#                listar_funcionarios()
-#                while True:
-#                    try:
-#                        n = int(input("Escolha um funcionário para alterar seus dados: "))
-#                        if n < 1 or n > len(funcionarios): raise Exception()
-#                        break
-#                        # Ainda precisamos programar isso
-#                    except:
-#                        print("Você digitou algo errado. Tente novamente.")
-#            else:
-#                print(SEM_PERMISSAO)
         case 11:
             print("Exemplares emprestados:")
             i = 1
             for p in publicacoes: # Procura nas publicações
-                for e in p.exemplares(): # Procura nos exemplares
+                for e in p.exemplares: # Procura nos exemplares
                     if e.emprestado:
                         print("[{i}] {p.tipo()} {p.titulo} ISBN {p.isbn}, emprestado por {e.funcionario} no dia {e.data_emprestimo}.")
                         i += 1
         case 12:
-            if e_dono:
+            if e_dono and len(multar) > 0:
                 print("Entre em contato com um dos clientes abaixo e dê baixa escolhendo uma das opções abaixo.")
                 while True:
                     try:
@@ -224,7 +213,8 @@ def sistema(): # Chamado até sair da conta.
                     except:
                         print("Você digitou algo errado. Tente novamente.")
             else:
-                print(SEM_PERMISSAO)
+                if not e_dono: print(SEM_PERMISSAO)
+                else: print("Não há exemplares para multar.")
         case 13:
             if len(clientes) != 0:
                 while True:
@@ -255,6 +245,9 @@ def sistema(): # Chamado até sair da conta.
                 print(SEM_PERMISSAO)
         case 15:
             while True:
+                if len(publicacoes) == 0:
+                    print("Não há publicações cadastradas.")
+                    break
                 try:
                     nome = input("Digite parte do nome da publicação que você quer remover: ")
                     listar_publicacoes(nome)
@@ -267,9 +260,18 @@ def sistema(): # Chamado até sair da conta.
                     print("Você digitou algo errado. Tente novamente.")
         case 16:
             while True:
+                if len(publicacoes) == 0:
+                    print("Não há publicações cadastradas.")
+                    break
                 try:
-                    
+                    nome = input("Digite parte do nome da publicação: ")
                     listar_publicacoes(nome)
+                    n = int(input("Escolha uma publicação: "))
+                    if n < 1 or n > len(publicacoes): raise Exception()
+                    print(publicacoes[n-1])
+                    break
+                except:
+                    print("Digite apenas números inteiros no intervalo dado.")
         case _:
             print("Você não digitou uma opção válida.")
     return escolha
@@ -283,10 +285,12 @@ def carregar_arquivos():
         while True:
             try:
                 o = pickle.load(inp)
+                if type(o) is Dono:
+                    d = o
             except EOFError:
                 break
             funcionarios.append(o)
-
+    
     with open('publicacoes.pkl', 'rb') as inp:
         while True:
             try:
@@ -303,12 +307,13 @@ def carregar_arquivos():
                 break
             clientes.append(o)
 
+    return d
 def salvar_arquivos():
-    funcionarios.remove(dono)
+#    funcionarios.remove(dono)
     with open('funcionarios.pkl', 'wb') as outp:
         for fun in funcionarios:
             pickle.dump(fun, outp, pickle.HIGHEST_PROTOCOL)
-    funcionarios.append(dono)
+#    funcionarios.append(dono)
 
     with open('publicacoes.pkl', 'wb') as outp:
         for p in publicacoes:
@@ -318,15 +323,16 @@ def salvar_arquivos():
         for c in clientes:
             pickle.dump(c, outp, pickle.HIGHEST_PROTOCOL)
 
-# Cadastrando o dono com a senha padrão
-dono = Dono("Luiz de Moraes Sampaio", "426.704.238-17", "Guarulhos", "(11) 96061-8848", "luiz.sagitario@yahoo.com.br", 2, SENHA_PADRAO)
 funcionarios = []
 clientes = []
 publicacoes = []
 multar = []
 
-carregar_arquivos()
-funcionarios.append(dono)
+dono = None
+dono = carregar_arquivos()
+if dono == None: 
+    dono = DONO_PADRAO
+    funcionarios.append(dono)
 
 while True: # Loop do sistema
     funcionario_atual = fazer_login()
