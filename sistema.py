@@ -252,9 +252,11 @@ def sistema(): # Chamado até sair da conta.
             print("Você não digitou uma opção válida.")
     return escolha
 
-def carregar_arquivo_funcionarios():
-    f = open("funcionarios.json", "r")
-    
+def carregar_arquivos():
+    pass
+
+def salvar_arquivos():
+    pass
 
 # Cadastrando o dono com a senha padrão
 dono = Dono("Luiz de Moraes Sampaio", "426.704.238-17", "Guarulhos", "(11) 96061-8848", "luiz.sagitario@yahoo.com.br", 2, SENHA_PADRAO)
@@ -263,7 +265,7 @@ clientes = []
 publicacoes = []
 multar = []
 
-# carregar_arquivo_funcionarios()
+# carregar_arquivos()
 
 while True: # Loop do sistema
     funcionario_atual = fazer_login()
@@ -272,4 +274,6 @@ while True: # Loop do sistema
         escolha_sistema = sistema()
         if escolha_sistema != 99: input("Aperte ENTER para continuar...")
         clear()
-        if escolha_sistema == 99: break
+        if escolha_sistema == 99: 
+            salvar_arquivos()
+            break
