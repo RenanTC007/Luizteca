@@ -3,7 +3,7 @@ from hashlib import sha256
 import datetime
 from classes import *
 import os
-import json
+import pickle
 
 SEM_PERMISSAO = "Você não tem permissão para realizar esta ação."
 
@@ -253,19 +253,29 @@ def sistema(): # Chamado até sair da conta.
     return escolha
 
 def carregar_arquivos():
-    pass
+    if not os.path.isfile('funcionarios.pkl'): return
+    with open('funcionarios.pkl', 'rb') as inp:
+        while True:
+            try:
+                o = pickle.load(inp)
+            except EOFError:
+                break
+            funcionarios.append(o)
 
 def salvar_arquivos():
-    pass
+    with open('funcionarios.pkl', 'wb') as outp:
+        for fun in funcionarios:
+            pickle.dump(fun, outp, pickle.HIGHEST_PROTOCOL)
 
 # Cadastrando o dono com a senha padrão
 dono = Dono("Luiz de Moraes Sampaio", "426.704.238-17", "Guarulhos", "(11) 96061-8848", "luiz.sagitario@yahoo.com.br", 2, SENHA_PADRAO)
-funcionarios = [dono] # Primeiro funcionário cadastrado é o dono.
+funcionarios = []
 clientes = []
 publicacoes = []
 multar = []
 
-# carregar_arquivos()
+carregar_arquivos()
+funcionarios.append(dono)
 
 while True: # Loop do sistema
     funcionario_atual = fazer_login()
@@ -275,5 +285,6 @@ while True: # Loop do sistema
         if escolha_sistema != 99: input("Aperte ENTER para continuar...")
         clear()
         if escolha_sistema == 99: 
+            funcionarios.remove(dono)
             salvar_arquivos()
             break
