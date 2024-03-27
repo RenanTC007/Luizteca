@@ -66,6 +66,8 @@ def sistema(): # Chamado até sair da conta.
     print("[12] Multar exemplares não conservados.")
     print("[13] Ver detalhes de um cliente.")
     print("[14] Ver detalhes de um funcionário.")
+    print("[15] Remover publicação.")
+    print("[16] Ver detalhes de uma publicação.")
     
     print("[99] Sair da conta.")
     
@@ -131,7 +133,7 @@ def sistema(): # Chamado até sair da conta.
                             raise Exception()
                         for e in p.exemplares: # Procura nos exemplares da publicação e empresta um.
                             if e.emprestado == False:
-                                e.emprestar_exemplar(funcionario_atual, datetime.datetime.now())
+                                e.emprestar_exemplar(funcionario_atual, cliente, datetime.datetime.now())
                                 break
                         print(f"Exemplar de {p.titulo} emprestado para {cliente.nome} com sucesso no dia {datetime.datetime.now()} com sucesso.")
                         break
