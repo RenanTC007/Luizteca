@@ -215,8 +215,9 @@ def sistema(): # Chamado até sair da conta.
                             p = m[0]
                             e = m[1]
                             print(f"[{i}] {p.tipo()} {p.titulo}, ISBN {p.isbn}, emprestado por {e.funcionario.nome} (CPF {e.funcionario.cpf}) para {e.cliente.nome} com CPF {e.cliente.cpf} e número de telefone {e.cliente.telefone}, emprestado no dia {e.data_emprestimo} e devolvido no dia {e.data_devolucao}.")
+                            i += 1
                         escolha = int(input("Qual dos exemplares você quer dar baixa? "))
-                        if escolha < 1 or escolha > len(multar): raise Exception()
+                        if escolha < 1 or escolha > i: raise Exception()
                         multar.remove(multar[n-1])
                         print("Sucesso.")
                         break
@@ -257,11 +258,18 @@ def sistema(): # Chamado até sair da conta.
                 try:
                     nome = input("Digite parte do nome da publicação que você quer remover: ")
                     listar_publicacoes(nome)
-                    
+                    n = int(input("Digite o número correspondente à publicação que você quer remover: "))
+                    if n < 1 or n > len(publicacoes): raise Exception()
+                    publicacoes.remove(publicacoes[n-1])
+                    print("Publicação e seus exemplares removidos com sucesso.")
+                    break
                 except:
-                    pass
+                    print("Você digitou algo errado. Tente novamente.")
         case 16:
-            pass
+            while True:
+                try:
+                    
+                    listar_publicacoes(nome)
         case _:
             print("Você não digitou uma opção válida.")
     return escolha
