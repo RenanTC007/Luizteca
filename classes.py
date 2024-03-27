@@ -50,7 +50,6 @@ class Funcionario(Pessoa):
                 qntd = int(input("Quantidade de exemplares (apenas números inteiros): "))
                 genero = input("Gênero: ")
                 isbn = input("ISBN: ")
-                print("Publicação adicionada com sucesso.")
                 break
             except:
                 print("Você digitou algo errado. Tente novamente.")

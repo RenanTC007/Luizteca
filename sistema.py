@@ -137,7 +137,8 @@ def sistema(): # Chamado até sair da conta.
                             if e.emprestado == False:
                                 e.emprestar_exemplar(funcionario_atual, cliente, datetime.datetime.now())
                                 break
-                        print(f"Exemplar de {p.titulo} emprestado para {cliente.nome} com sucesso no dia {datetime.datetime.now()} com sucesso.")
+                        clear()
+                        print(f"Exemplar de {p.titulo} emprestado para {cliente.nome} com sucesso no dia {datetime.datetime.now()}.")
                         break
                 except:
                     print("Você digitou um número fora do intervalo permitido ou não digitou um número. Tente novamente.")
@@ -192,7 +193,7 @@ def sistema(): # Chamado até sair da conta.
             for p in publicacoes: # Procura nas publicações
                 for e in p.exemplares: # Procura nos exemplares
                     if e.emprestado:
-                        print("[{i}] {p.tipo()} {p.titulo} ISBN {p.isbn}, emprestado por {e.funcionario} no dia {e.data_emprestimo}.")
+                        print(f"[{i}] {p.tipo()} {p.titulo}, ISBN {p.isbn}, emprestado por {e.funcionario.nome} para {e.cliente.nome} no dia {e.data_emprestimo}.")
                         i += 1
         case 12:
             if e_dono and len(multar) > 0:
@@ -205,8 +206,8 @@ def sistema(): # Chamado até sair da conta.
                             e = m[1]
                             print(f"[{i}] {p.tipo()} {p.titulo}, ISBN {p.isbn}, emprestado por {e.funcionario.nome} (CPF {e.funcionario.cpf}) para {e.cliente.nome} com CPF {e.cliente.cpf} e número de telefone {e.cliente.telefone}, emprestado no dia {e.data_emprestimo} e devolvido no dia {e.data_devolucao}.")
                             i += 1
-                        escolha = int(input("Qual dos exemplares você quer dar baixa? "))
-                        if escolha < 1 or escolha > i: raise Exception()
+                        n = int(input("Qual dos exemplares você quer dar baixa? "))
+                        if n < 1 or n > i: raise Exception()
                         multar.remove(multar[n-1])
                         print("Sucesso.")
                         break
@@ -280,6 +281,7 @@ def carregar_arquivos():
     if not os.path.isfile('funcionarios.pkl'): return
     if not os.path.isfile('publicacoes.pkl'): return
     if not os.path.isfile('clientes.pkl'): return
+    if not os.path.isfile('multar.pkl'): return
 
     with open('funcionarios.pkl', 'rb') as inp:
         while True:
@@ -307,7 +309,16 @@ def carregar_arquivos():
                 break
             clientes.append(o)
 
+    with open('multar.pkl', 'rb') as inp:
+        while True:
+            try:
+                o = pickle.load(inp)
+            except EOFError:
+                break
+            multar.append(o)
+
     return d
+
 def salvar_arquivos():
 #    funcionarios.remove(dono)
     with open('funcionarios.pkl', 'wb') as outp:
@@ -322,6 +333,10 @@ def salvar_arquivos():
     with open('clientes.pkl', 'wb') as outp:
         for c in clientes:
             pickle.dump(c, outp, pickle.HIGHEST_PROTOCOL)
+
+    with open('multar.pkl', 'wb') as outp:
+        for m in multar:
+            pickle.dump(m, outp, pickle.HIGHEST_PROTOCOL)
 
 funcionarios = []
 clientes = []
