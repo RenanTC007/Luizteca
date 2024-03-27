@@ -122,7 +122,7 @@ def sistema(): # Chamado até sair da conta.
                         break
                     else:
                         # Pede-se o CPF por motivos de segurança: não é muito legal o funcionário ter acesso a todos os clientes.
-                        cpf = int(input("Qual cliente quer pegar este título emprestado? Digite o CPF (com pontuação): "))
+                        cpf = input("Qual cliente quer pegar este título emprestado? Digite o CPF (com pontuação): ")
                         cliente = 0
                         for c in clientes: # Verifica todos os clientes em busca de um CPF.
                             if c.cpf == cpf: cliente = c
@@ -254,6 +254,9 @@ def sistema(): # Chamado até sair da conta.
 
 def carregar_arquivos():
     if not os.path.isfile('funcionarios.pkl'): return
+    if not os.path.isfile('publicacoes.pkl'): return
+    if not os.path.isfile('clientes.pkl'): return
+
     with open('funcionarios.pkl', 'rb') as inp:
         while True:
             try:
@@ -262,12 +265,36 @@ def carregar_arquivos():
                 break
             funcionarios.append(o)
 
+    with open('publicacoes.pkl', 'rb') as inp:
+        while True:
+            try:
+                o = pickle.load(inp)
+            except EOFError:
+                break
+            publicacoes.append(o)
+
+    with open('clientes.pkl', 'rb') as inp:
+        while True:
+            try:
+                o = pickle.load(inp)
+            except EOFError:
+                break
+            clientes.append(o)
+
 def salvar_arquivos():
     funcionarios.remove(dono)
     with open('funcionarios.pkl', 'wb') as outp:
         for fun in funcionarios:
             pickle.dump(fun, outp, pickle.HIGHEST_PROTOCOL)
     funcionarios.append(dono)
+
+    with open('publicacoes.pkl', 'wb') as outp:
+        for p in publicacoes:
+            pickle.dump(p, outp, pickle.HIGHEST_PROTOCOL)
+
+    with open('clientes.pkl', 'wb') as outp:
+        for c in clientes:
+            pickle.dump(c, outp, pickle.HIGHEST_PROTOCOL)
 
 # Cadastrando o dono com a senha padrão
 dono = Dono("Luiz de Moraes Sampaio", "426.704.238-17", "Guarulhos", "(11) 96061-8848", "luiz.sagitario@yahoo.com.br", 2, SENHA_PADRAO)
