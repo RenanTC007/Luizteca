@@ -149,11 +149,12 @@ def sistema(): # Chamado até sair da conta.
                     n = int(input("Digite o número da publicação que está sendo devolvida: "))
                     if n < 1 or n > len(publicacoes): raise Exception()
 
+                    p = publicacoes[n-1]
+
                     if p.quantidade_exemplares_emprestados() == 0:
                         print("Nenhum exemplar desta publicação foi emprestado.")
                         break
 
-                    p = publicacoes[n-1]
                     p.listar_exemplares_emprestados()
                     n = int(input("Selecione um dos exemplares emprestados para devolver: "))
                     if n < 1 or n > p.quantidade_exemplares_emprestados():
@@ -250,6 +251,15 @@ def sistema(): # Chamado até sair da conta.
                         print("Você digitou algo errado. Tente novamente.")
             else:
                 print(SEM_PERMISSAO)
+        case 15:
+            while True:
+                try:
+                    nome = input("Digite parte do nome da publicação que você quer remover: ")
+                    listar_publicacoes(nome)
+                except:
+                    pass
+        case 16:
+            pass
         case _:
             print("Você não digitou uma opção válida.")
     return escolha
