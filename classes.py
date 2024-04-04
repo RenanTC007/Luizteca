@@ -38,14 +38,16 @@ class Funcionario(Pessoa):
 
     def adicionar_publicacao(self):
         while True:
-            print("Adicionando uma nova publicação.")
+            print("Adicionando uma nova publicação. Deixe em branco quando for plausível.")
             try:
                 tipo = int(input("Escolha o tipo da publicação. Digite 1 para LIVRO, 2 para REVISTA e 3 para JORNAL: "))
                 if tipo < 1 or tipo > 3: raise Exception() # Jogar um erro de o tipo não estiver entre 1 e 3.
                 titulo = input("Título: ")
                 autor = input("Autor: ")
                 editora = input("Editora: ")
-                edicao = int(input("Edição (apenas números inteiros): "))
+                edicao = input("Edição (apenas números inteiros, 1 por padrão para revistas e jornais): ")
+                if edicao == '': edicao = 1
+                edicao = int(edicao)
                 ano = int(input("Ano de publicação (apenas números inteiros): "))
                 qntd = int(input("Quantidade de exemplares (apenas números inteiros): "))
                 genero = input("Gênero: ")
