@@ -7,10 +7,18 @@ TETO_SALARIAL = 10000 # Máximo valor que um funcionário pode ter de salário.
 class Pessoa:
     def __init__(self, nome, cpf, endereco, telefone, email):
         self.nome = nome
-        self.cpf = cpf
+        self.__cpf = cpf
         self.endereco = endereco
         self.telefone = telefone
-        self.email = email
+        self.__email = email
+
+    @property
+    def cpf(self):
+        return self.__cpf
+    
+    @property
+    def email(self):
+        return self.__email
 
     def __str__(self):
         return f"Nome: {self.nome}\nCPF: {self.cpf}\nEndereço: {self.endereco}\nTelefone: {self.telefone}\nE-mail: {self.email}"
@@ -18,8 +26,16 @@ class Pessoa:
 class Funcionario(Pessoa):
     def __init__(self, nome, cpf, endereco, telefone, email, salario, senha):
         super().__init__(nome, cpf, endereco, telefone, email)
-        self.salario = salario
-        self.senha = senha
+        self.__salario = salario
+        self.__senha = senha
+
+    @property
+    def salario(self):
+        return self.__salario
+
+    @property
+    def senha(self):
+        return self.__senha
 
     def cadastrar_cliente(self):
         print("Cadastrando um novo cliente.")
@@ -34,7 +50,7 @@ class Funcionario(Pessoa):
     def mudar_senha(self):
         print("Mudando sua senha.")
         # Muda a senha usando GETPASS para esconder a senha e SHA256 para criptografar.
-        self.senha = sha256(getpass("Digite uma nova senha: ").encode()).hexdigest()
+        self.__senha = sha256(getpass("Digite uma nova senha: ").encode()).hexdigest()
 
     def adicionar_publicacao(self):
         while True:
