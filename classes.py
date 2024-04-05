@@ -87,10 +87,12 @@ class Funcionario(Pessoa):
     def adicionar_exemplar(self, lista):
         while True:
             try:
-                n = int(input())
+                n = int(input("Escolha um número correspondente à publicação que está sendo cadastrada: "))
                 if n < 1 or n > len(lista): raise Exception() # A publicação deve estar na lista de publicações.
+                break
             except:
                 print(f"Digite um número inteiro entre 1 e {len(lista)}. Tente novamente.")
+        while True:
             try:
                 qntd = int(input("Digite a quantidade de exemplares a serem adicionados: "))
                 if qntd < 1: raise Exception()

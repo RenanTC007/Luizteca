@@ -105,7 +105,6 @@ def sistema(): # Chamado até sair da conta.
                 print("Não há publicações cadastradas. Por favor, cadastre uma publicação primeiro.")
             else: 
                 listar_publicacoes()
-                print("Escolha um número correspondente à publicação que está sendo cadastrada:")
                 funcionario_atual.adicionar_exemplar(publicacoes)
         case 7:
             while True:
